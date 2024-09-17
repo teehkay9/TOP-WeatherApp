@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 60%;
+  margin: 2rem auto;
+  background-color: lightblue;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 2em;
+}
+
+h2 {
+  margin-bottom: 2em;
+  text-transform: capitalize;
+}
+
+.day {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 2em;
+  background-color: beige;
+}

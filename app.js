@@ -7,6 +7,41 @@ function buildEndpoint(location) {
   return `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${WEATHER_UNIT}&key=${ApiKey}`;
 }
 
+function displayWeatherData(weatherInfo) {
+  const container = document.createElement("div");
+  container.classList.add("day");
+
+  const city = document.createElement("h2");
+  city.classList.add("city");
+  city.textContent = weatherInfo.city;
+
+  const date = document.createElement("p");
+  date.classList.add("date");
+  date.textContent = weatherInfo.date;
+
+  const maxTemp = document.createElement("p");
+  maxTemp.classList.add("temp-max");
+  maxTemp.textContent = weatherInfo.max_temp;
+
+  const minTemp = document.createElement("p");
+  minTemp.classList.add("temp-min");
+  minTemp.textContent = weatherInfo.min_temp;
+
+  const icon = document.createElement("p");
+  icon.classList.add("icon");
+  icon.textContent = weatherInfo.icon;
+
+  const outerContainer = document.querySelector(".container");
+
+  container.appendChild(city);
+  container.appendChild(date);
+  container.appendChild(maxTemp);
+  container.appendChild(minTemp);
+  container.appendChild(icon);
+
+  outerContainer.appendChild(container);
+}
+
 async function fetchData(URL) {
   try {
     const response = await fetch(URL);
@@ -34,6 +69,8 @@ async function main(location) {
 
   const today = new WeatherToday(weatherResponse);
   console.log(today);
+
+  displayWeatherData(today);
 }
 
 function WeatherToday(response) {
@@ -58,5 +95,6 @@ form.addEventListener("submit", (event) => {
     return;
   }
   main(location);
+
   input.value = "";
 });
