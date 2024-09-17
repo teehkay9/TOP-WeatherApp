@@ -1,31 +1,49 @@
 console.log("Hello SWE");
 
+let weatherData;
+
 const ApiKey = "Q8YKZGWZ88VHZ983BJZ8VH9F8";
-const myLocation = "London";
 const WEATHER_UNIT = "metric";
 
-const ApiEndpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${myLocation}?unitGroup=${WEATHER_UNIT}&key=${ApiKey}`;
+function buildEndpoint(location) {
+  return `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${WEATHER_UNIT}&key=${ApiKey}`;
+}
 
 async function fetchData(URL) {
   try {
     const response = await fetch(URL);
     if (!response.ok) throw new Error("Error fetching data");
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log("Error:", error);
   }
 }
 
-async function getWeatherData() {
+async function getWeatherData(location) {
   try {
+    const ApiEndpoint = buildEndpoint(location);
     const weatherData = await fetchData(ApiEndpoint);
-    console.log("Here is the Weather Data:");
-    console.log(weatherData);
+    return weatherData;
   } catch (error) {
     console.error("Error fetching weather data:", error);
   }
 }
 
-getWeatherData();
+async function main() {
+  const weatherResponse = await getWeatherData("Grevenbroich");
+  console.log(weatherResponse);
+
+  const today = new WeatherToday(weatherResponse);
+  console.log(today);
+}
+
+function WeatherToday(response) {
+  this.city = response.address;
+  this.date = response.days[0].datetime;
+  this.max_temp = response.days[0].tempmax;
+  this.min_temp = response.days[0].tempmin;
+  this.icon = response.days[0].icon;
+}
+
+main();
