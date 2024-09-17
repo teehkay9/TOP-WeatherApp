@@ -1,7 +1,5 @@
 console.log("Hello SWE");
 
-let weatherData;
-
 const ApiKey = "Q8YKZGWZ88VHZ983BJZ8VH9F8";
 const WEATHER_UNIT = "metric";
 
@@ -30,8 +28,8 @@ async function getWeatherData(location) {
   }
 }
 
-async function main() {
-  const weatherResponse = await getWeatherData("Grevenbroich");
+async function main(location) {
+  const weatherResponse = await getWeatherData(location);
   console.log(weatherResponse);
 
   const today = new WeatherToday(weatherResponse);
@@ -46,4 +44,19 @@ function WeatherToday(response) {
   this.icon = response.days[0].icon;
 }
 
-main();
+// form that lets user submit a location
+const form = document.querySelector("form");
+const input = document.querySelector("#location");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const location = input.value.trim();
+
+  if (!location) {
+    alert("You must enter something");
+    return;
+  }
+  main(location);
+  input.value = "";
+});
